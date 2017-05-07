@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-framework="angularjs">
+	<head>
+		<meta charset="utf-8">
+		<title>todos</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="node_modules/angular/angular.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body ng-app="todo" ng-controller="todoctrl">
+		<section id="todoapp">
+			<header id="header">
+				<h1>todos</h1>
+				<form id="todo-form" ng-submit="addTodo()">
+					<input id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" ng-disabled="saving">
+				</form>
+			</header>
+			<section id="main" ng-show="todos.length">
+				<ul id="todo-list">
+					<li ng-repeat="todo in todos | filter:statusFilter track by todo.id" ng-class="{completed: todo.completed}">
+						<div class="view">
+							<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="doneTodo(todo)">
+							<label>{{ todo.title }}</label>
+							<button class="destroy" ng-click="removeTodo($index)"></button>
+						</div>
+					</li>
+
+				</ul>
+			</section>
+			<footer id="footer" ng-show="todos.length">
+				<span id="todo-count"><strong class="ng-binding">{{ remainingCount }}</strong>
+					<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
+				</span>
+				<ul id="filters">
+					<li>
+						<a ng-class="{selected: status == 0}" ng-click="filter(0)">All</a>
+					</li>
+					<li>
+						<a ng-class="{selected: status == 1}" ng-click="filter(1)">Active</a>
+					</li>
+					<li>
+						<a ng-class="{selected: status == 2}" ng-click="filter(2)">Completed</a>
+					</li>
+				</ul>
+			</footer>
+		</section>
+	</body>
+</html>
